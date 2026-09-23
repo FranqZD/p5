@@ -49,7 +49,7 @@ const html = `<!DOCTYPE html>
 
 export default {
 	async fetch(_request, env): Promise<Response> {
-		const data = await queryDatabase(env.p6);
+		const data = await queryDatabase(env.infra);
 		return new Response(html, {
 			headers: { "Content-Type": "text/html; charset=utf-8" },
 		});
