@@ -4,7 +4,36 @@ async function queryDatabase(db: D1Database) {
 	return results;
 }
 
-const html = `<!DOCTYPE html>
+function escapeHtml(value: unknown): string {
+	return String(value ?? "")
+		.replaceAll("&", "&amp;")
+		.replaceAll("<", "&lt;")
+		.replaceAll(">", "&gt;")
+		.replaceAll('"', "&quot;");
+}
+
+function renderUsers(data: Record<string, unknown>[]): string {
+	if (data.length === 0) {
+		return `<p class="users-empty">No hay usuarios</p>`;
+	}
+
+	const items = data
+		.map((user) => {
+			const fields = Object.entries(user)
+				.map(
+					([key, value]) =>
+						`<span><strong>${escapeHtml(key)}:</strong> ${escapeHtml(value)}</span>`,
+				)
+				.join("");
+			return `<li>${fields}</li>`;
+		})
+		.join("");
+
+	return `<ul class="users">${items}</ul>`;
+}
+
+function buildHtml(data: Record<string, unknown>[]): string {
+	return `<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -37,20 +66,46 @@ const html = `<!DOCTYPE html>
       color: #94a3b8;
       letter-spacing: 0.04em;
     }
+    .users {
+      list-style: none;
+      margin-top: 1.5rem;
+      display: grid;
+      gap: 0.75rem;
+      text-align: left;
+    }
+    .users li {
+      display: grid;
+      gap: 0.25rem;
+      padding: 0.75rem 1rem;
+      background: rgba(15, 23, 42, 0.45);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 0.5rem;
+      font-size: 0.95rem;
+      color: #cbd5e1;
+    }
+    .users strong {
+      color: #e2e8f0;
+      font-weight: 600;
+    }
+    .users-empty {
+      margin-top: 1.5rem;
+    }
   </style>
 </head>
 <body>
   <main>
     <h1>Luis Francisco Zarate Diaz</h1>
     <p>Developer jr</p>
+    ${renderUsers(data)}
   </main>
 </body>
 </html>`;
+}
 
 export default {
 	async fetch(_request, env): Promise<Response> {
 		const data = await queryDatabase(env.infra);
-		return new Response(html, {
+		return new Response(buildHtml(data as Record<string, unknown>[]), {
 			headers: { "Content-Type": "text/html; charset=utf-8" },
 		});
 	},
