@@ -13,8 +13,8 @@
 	"upload_source_maps": true,
 	"d1_databases": [
 		{
-			"binding": "p6",
-			"database_name": "p6",
+			"binding": "infra",
+			"database_name": "infra",
 			"database_id": "51e8d1cf-9835-420e-b2a3-139919616e52"
 		}
 	]
