@@ -13,7 +13,7 @@
 	"upload_source_maps": true,
 	"d1_databases": [
 		{
-			"binding": "infra",
+			"binding": "DB",
 			"database_name": "infra",
 			"database_id": "51e8d1cf-9835-420e-b2a3-139919616e52"
 		}
