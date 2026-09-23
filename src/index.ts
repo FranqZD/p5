@@ -1,3 +1,9 @@
+async function queryDatabase(db: D1Database) {
+	// Connect and execute a query
+	const { results } = await db.prepare("SELECT * FROM users").all();
+	return results;
+}
+
 const html = `<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -42,7 +48,8 @@ const html = `<!DOCTYPE html>
 </html>`;
 
 export default {
-	async fetch(): Promise<Response> {
+	async fetch(_request, env): Promise<Response> {
+		const data = await queryDatabase(env.p6);
 		return new Response(html, {
 			headers: { "Content-Type": "text/html; charset=utf-8" },
 		});
