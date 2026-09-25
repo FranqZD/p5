@@ -36,8 +36,8 @@
 			"d1_databases": [
 				{
 					"binding": "infra",
-					"database_name": "infra",
-					"database_id": "51e8d1cf-9835-420e-b2a3-139919616e52"
+					"database_name": "infra2",
+					"database_id": "d714e171-ac17-46e6-9f83-21ffaaa9cd2a"
 				}
 			]
 		}
