@@ -44,12 +44,52 @@ jobs:
           path: coverage
           retention-days: 14
 
-  deploy-production:
-    name: Deploy production Worker
+  deploy-dev:
+    name: Deploy dev Worker
     needs: build-and-test
     runs-on: ubuntu-latest
+    environment:
+      name: dev
     permissions:
       contents: read
+      deployments: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: worker-build
+          path: dist
+
+      - name: Publish to Cloudflare dev
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --env dev
+
+  deploy-production:
+    name: Deploy production Worker
+    needs: deploy-dev
+    runs-on: ubuntu-latest
+    # Waits on the "Review deployments" button until a required reviewer
+    # clicks "Approve and deploy" (GitHub → Settings → Environments → production).
+    environment:
+      name: production
+    permissions:
+      contents: read
+      deployments: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
