@@ -7,4 +7,12 @@ export default defineConfig({
 			wrangler: { configPath: "./wrangler.jsonc" },
 		}),
 	],
+	test: {
+		coverage: {
+			provider: "istanbul",
+			reporter: ["text", "html", "lcov", "json-summary"],
+			reportsDirectory: "./coverage",
+			include: ["src/**/*.ts"],
+		},
+	},
 });

@@ -17,7 +17,20 @@
 			"database_name": "infra",
 			"database_id": "51e8d1cf-9835-420e-b2a3-139919616e52"
 		}
-	]
+	],
+	"env": {
+		"production": {
+			"name": "lively-waterfall-dd96-prod",
+			"workers_dev": true,
+			"d1_databases": [
+				{
+					"binding": "infra",
+					"database_name": "infra",
+					"database_id": "51e8d1cf-9835-420e-b2a3-139919616e52"
+				}
+			]
+		}
+	}
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
