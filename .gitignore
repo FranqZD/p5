@@ -28,6 +28,10 @@ lib-cov
 coverage
 \*.lcov
 
+# UAT and unit test reports
+
+test-results/
+
 # nyc test coverage
 
 .nyc_output

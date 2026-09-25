@@ -9,8 +9,9 @@
     "deploy:production": "wrangler deploy --env production",
     "dev": "wrangler dev",
     "start": "wrangler dev",
-    "test": "vitest run",
-    "test:coverage": "vitest run --coverage",
+    "test": "vitest run test/index.spec.ts",
+    "test:coverage": "vitest run test/index.spec.ts --coverage",
+    "test:uat": "vitest run test/uat.spec.ts --reporter=default --reporter=json --outputFile=test-results/uat.json",
     "test:watch": "vitest",
     "cf-typegen": "wrangler types"
   },

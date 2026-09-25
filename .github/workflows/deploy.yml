@@ -44,9 +44,38 @@ jobs:
           path: coverage
           retention-days: 14
 
+  uat:
+    name: UAT
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Ejecutar UAT
+        run: npm run test:uat
+
+      - name: Publicar resultado de UAT
+        uses: actions/upload-artifact@v4
+        with:
+          name: uat-results
+          path: test-results
+          retention-days: 14
+
   deploy-dev:
     name: Deploy dev Worker
-    needs: build-and-test
+    needs: uat
     runs-on: ubuntu-latest
     environment:
       name: dev
